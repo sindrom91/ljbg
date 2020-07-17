@@ -34,7 +34,7 @@ clang_dep = cc.find_library('clang',
 m_dep = cc.find_library('m', required : true)
 
 executable('ljbg',
-           ['ljbg.c', 'argtable3.c'],
+           ['ljbg.c', 'argument_parser.c'],
            dependencies : [clang_dep, m_dep],
            include_directories : [llvm_incdir],
            c_args : '-fPIC')

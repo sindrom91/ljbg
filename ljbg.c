@@ -17,7 +17,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#include "argtable3.h"
+#include "argument_parser.h"
 #include <assert.h>
 #include <clang-c/Index.h>
 #include <stdbool.h>
@@ -81,45 +81,25 @@ enum CXChildVisitResult FunctionVisitor(CXCursor cursor, CXCursor parent, CXClie
     return CXChildVisit_Continue;
 }
 
-typedef struct
+int main(int argc, char *argv[])
 {
-    struct arg_file *input_file;
-    struct arg_file *output_file;
-    struct arg_str *compile_options;
-    struct arg_end *end;
-} Arguments;
+    const Arguments args = ParseArguments(argc, argv);
 
-Arguments ParseArguments(const int argc, char **argv)
-{
-    Arguments args = {arg_filen(NULL, NULL, NULL, 1, 1, NULL), arg_filen("o", "output", NULL, 1, 1, NULL),
-                      arg_strn(NULL, NULL, NULL, 0, 100, NULL), arg_end(20)};
-    void *argtable[] = {args.input_file, args.output_file, args.compile_options, args.end};
-    arg_parse(argc, argv, argtable);
-    return args;
-}
-
-int main(int argc, char **argv)
-{
-    assert(argc > 2);
+    if (args.print_usage_and_quit)
+    {
+        return 1;
+    }
 
     CXIndex index = clang_createIndex(0, 0);
     assert(index != NULL);
 
-    Arguments args = ParseArguments(argc, argv);
-
-    if (args.end->count > 0)
-    {
-        arg_print_errors(stderr, args.end, "ljbg");
-        return 1;
-    }
-
-    CXTranslationUnit tu = clang_parseTranslationUnit(index, args.input_file->filename[0], args.compile_options->sval,
-                                                      args.compile_options->count, NULL, 0, 0);
+    CXTranslationUnit tu = clang_parseTranslationUnit(index, args.input_file, args.compilation_arguments,
+                                                      args.compilation_argument_count, NULL, 0, 0);
     assert(tu != NULL);
 
     CXCursor cursor = clang_getTranslationUnitCursor(tu);
 
-    FILE *f = fopen(args.output_file->filename[0], "w");
+    FILE *f = fopen(args.output_file, "w");
     assert(f != NULL);
 
     fprintf(f, "%s", gLuaFileBoilerplatePrefix);
