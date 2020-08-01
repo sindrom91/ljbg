@@ -85,4 +85,3 @@ void GenerateBindings(const Arguments args)
     clang_disposeTranslationUnit(tu);
     clang_disposeIndex(index);
 }
-

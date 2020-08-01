@@ -48,4 +48,3 @@ Arguments ParseArguments(int argc, char *argv[])
     }
     return args;
 }
-
