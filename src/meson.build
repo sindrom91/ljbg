@@ -12,8 +12,11 @@ clang_dep = cc.find_library('clang',
 
 m_dep = cc.find_library('m', required : true)
 
+bindgen = static_library('bindings_generator',
+                         ['bindings_generator.c' ,'argument_parser.c'],
+                         dependencies : [clang_dep, m_dep],
+                         include_directories : [llvm_incdir])
+
 executable('ljbg',
-           ['ljbg.c', 'argument_parser.c'],
-           dependencies : [clang_dep, m_dep],
-           include_directories : [llvm_incdir],
-           c_args : '-fPIC')
+           'ljbg.c',
+           link_with : bindgen)
