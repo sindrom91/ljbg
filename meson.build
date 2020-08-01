@@ -17,7 +17,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-project('ljbg', 'c', 'cpp')
+project('ljbg', 'c', 'cpp', license : 'MIT')
 
 cc = meson.get_compiler('c')
 
