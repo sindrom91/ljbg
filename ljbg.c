@@ -81,15 +81,8 @@ enum CXChildVisitResult FunctionVisitor(CXCursor cursor, CXCursor parent, CXClie
     return CXChildVisit_Continue;
 }
 
-int main(int argc, char *argv[])
+void GenerateBindings(const Arguments args)
 {
-    const Arguments args = ParseArguments(argc, argv);
-
-    if (args.print_usage_and_quit)
-    {
-        return 1;
-    }
-
     CXIndex index = clang_createIndex(0, 0);
     assert(index != NULL);
 
@@ -110,6 +103,18 @@ int main(int argc, char *argv[])
 
     clang_disposeTranslationUnit(tu);
     clang_disposeIndex(index);
+}
+
+int main(int argc, char *argv[])
+{
+    const Arguments args = ParseArguments(argc, argv);
+
+    if (args.print_usage_and_quit)
+    {
+        return 1;
+    }
+
+    GenerateBindings(args);
 
     return 0;
 }
