@@ -20,3 +20,4 @@
 project('ljbg', 'c', 'cpp', license : 'MIT')
 
 subdir('src')
+subdir('test')
