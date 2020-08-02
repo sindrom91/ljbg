@@ -21,7 +21,7 @@ static bool IsUnnamedStructUnionOrEnum(const CXCursor c)
     }
 
     const CXString pretty_printed_cursor = clang_getCursorPrettyPrinted(c, (CXPrintingPolicy)NULL);
-    const char *s = clang_getCString(pretty_printed_cursor);
+    const char* s = clang_getCString(pretty_printed_cursor);
     if ((strncmp(gUnnamedStructPrefix, s, strlen(gUnnamedStructPrefix)) != 0) &&
         (strncmp(gUnnamedUnionPrefix, s, strlen(gUnnamedUnionPrefix)) != 0) &&
         (strncmp(gUnnamedEnumPrefix, s, strlen(gUnnamedEnumPrefix)) != 0))
@@ -52,7 +52,7 @@ static enum CXChildVisitResult FunctionVisitor(CXCursor cursor, CXCursor parent,
         const CXString pretty_printed_cursor = clang_getCursorPrettyPrinted(cursor, policy);
         if (!IsUnnamedStructUnionOrEnum(cursor))
         {
-            FILE *f = *(FILE **)client_data;
+            FILE* f = *(FILE**)client_data;
             fprintf(f, "%s;\n", clang_getCString(pretty_printed_cursor));
         }
 
@@ -67,13 +67,13 @@ void GenerateBindings(const Arguments args)
     CXIndex index = clang_createIndex(0, 0);
     assert(index != NULL);
 
-    CXTranslationUnit tu = clang_parseTranslationUnit(index, args.input_file, args.compilation_arguments,
-                                                      args.compilation_argument_count, NULL, 0, 0);
+    CXTranslationUnit tu = clang_parseTranslationUnit(
+        index, args.input_file, args.compilation_arguments, args.compilation_argument_count, NULL, 0, 0);
     assert(tu != NULL);
 
     CXCursor cursor = clang_getTranslationUnitCursor(tu);
 
-    FILE *f = fopen(args.output_file, "w");
+    FILE* f = fopen(args.output_file, "w");
     assert(f != NULL);
 
     fprintf(f, "%s", gLuaFileBoilerplatePrefix);

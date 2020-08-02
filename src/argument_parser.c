@@ -10,7 +10,7 @@ const char args_option_short[] = "-a";
 const char help_option_long[] = "--help";
 const char help_option_short[] = "-h";
 
-Arguments ParseArguments(int argc, char *argv[])
+Arguments ParseArguments(int argc, char* argv[])
 {
     Arguments args = {NULL, NULL, NULL, 0, true};
 
@@ -43,7 +43,7 @@ Arguments ParseArguments(int argc, char *argv[])
 
     if ((strcmp(args_option_short, argv[active_index]) == 0) || (strcmp(args_option_long, argv[active_index]) == 0))
     {
-        args.compilation_arguments = (const char *const *)&argv[active_index + 1];
+        args.compilation_arguments = (const char* const*)&argv[active_index + 1];
         args.compilation_argument_count = argc - active_index - 1;
     }
     return args;
