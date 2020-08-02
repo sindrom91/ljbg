@@ -12,10 +12,10 @@ clang_dep = cc.find_library('clang',
 
 m_dep = cc.find_library('m', required : true)
 
-bindgen_lib = static_library('bindings_generator',
-                         ['bindings_generator.c' ,'argument_parser.c'],
-                         dependencies : [clang_dep, m_dep],
-                         include_directories : [llvm_incdir])
+bindgen_lib = library('bindings_generator',
+                      ['bindings_generator.c' ,'argument_parser.c'],
+                      dependencies : [clang_dep, m_dep],
+                      include_directories : [llvm_incdir])
 
 bindgen_dep = declare_dependency(include_directories : '.',
                          link_with : bindgen_lib)
