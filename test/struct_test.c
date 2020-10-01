@@ -1,27 +1,13 @@
 //
-// LJBG © -- LuaJIT FFI bindings generator.
+// LJBG -- LuaJIT FFI bindings generator.
 //
 // Copyright (C) 2020 Stefan Pejic
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the  "Software"), to deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-// Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
-// OR COPYRIGHT HOLDERS BE LIABLE FOR ANY  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
 
-extern "C"
-{
 #include "bindings_generator.h"
-}
-#include <gtest/gtest.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void WriteContentToFile(const char* filename, const char* content)
 {
@@ -44,6 +30,22 @@ char* ReadContentFromFile(const char* filename)
     return content;
 }
 
+void ExpectStrEq(const char* const expected, const char* const actual)
+{
+    if (strcmp(expected, actual) == 0)
+    {
+        printf("\033[1;32m");
+        printf("# TEST PASSED!\n");
+        printf("\033[0m");
+    }
+    else
+    {
+        printf("\033[1;31m");
+        printf("# TEST FAILED!\n");
+        printf("\033[0m");
+    }
+}
+
 void RunTest(const char* input_filename,
              const char* output_filename,
              const char** compilation_arguments,
@@ -62,7 +64,7 @@ void RunTest(const char* input_filename,
     GenerateBindings(args);
 
     char* actual_output = ReadContentFromFile(output_filename);
-    EXPECT_STREQ(expected_output, actual_output);
+    ExpectStrEq(expected_output, actual_output);
 
     free(actual_output);
 }
@@ -70,7 +72,7 @@ void RunTest(const char* input_filename,
 #define PREFIX "local ffi = require(\"ffi\")\n\nffi.cdef[[\n"
 #define SUFFIX "]]\n"
 
-TEST(Structs, RegularStruct)
+void RunStructTest()
 {
     const char input_content[] = "struct s {\n    int x;\n};\n";
     const char input_filename[] = "test_struct.h";
@@ -78,3 +80,5 @@ TEST(Structs, RegularStruct)
     const char expected_output[] = PREFIX "struct s {\n    int x;\n};\n" SUFFIX;
     RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
 }
+
+int main() { RunStructTest(); }
