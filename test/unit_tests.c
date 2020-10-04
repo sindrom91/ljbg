@@ -70,14 +70,14 @@ void RunTest(const char* const input_filename,
 }
 
 #define PREFIX "local ffi = require(\"ffi\")\n\nffi.cdef[[\n"
-#define SUFFIX "]]\n"
+#define SUFFIX "\n]]\n"
 
 void RunStructTest()
 {
     const char input_content[] = "struct s {\n    int x;\n};\n";
     const char input_filename[] = "test_struct.h";
     const char output_filename[] = "test_struct.lua";
-    const char expected_output[] = PREFIX "struct s {\n    int x;\n};\n" SUFFIX;
+    const char expected_output[] = PREFIX "struct s {\n    int x;\n};" SUFFIX;
     RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
 }
 
@@ -86,7 +86,7 @@ void RunUnionTest()
     const char input_content[] = "union u {\n    int x;\n    float y;\n};\n";
     const char input_filename[] = "test_union.h";
     const char output_filename[] = "test_union.lua";
-    const char expected_output[] = PREFIX "union u {\n    int x;\n    float y;\n};\n" SUFFIX;
+    const char expected_output[] = PREFIX "union u {\n    int x;\n    float y;\n};" SUFFIX;
     RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
 }
 
@@ -95,7 +95,7 @@ void RunFunctionTest()
     const char input_content[] = "int Foo(int x, int y);";
     const char input_filename[] = "test_function.h";
     const char output_filename[] = "test_function.lua";
-    const char expected_output[] = PREFIX "int Foo(int x, int y);\n" SUFFIX;
+    const char expected_output[] = PREFIX "int Foo(int x, int y);" SUFFIX;
     RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
 }
 
