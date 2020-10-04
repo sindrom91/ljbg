@@ -81,4 +81,17 @@ void RunStructTest()
     RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
 }
 
-int main() { RunStructTest(); }
+void RunUnionTest()
+{
+    const char input_content[] = "union u {\n    int x;\n    float y;\n};\n";
+    const char input_filename[] = "test_union.h";
+    const char output_filename[] = "test_union.lua";
+    const char expected_output[] = PREFIX "union u {\n    int x;\n    float y;\n};\n" SUFFIX;
+    RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
+}
+
+int main()
+{
+    RunStructTest();
+    RunUnionTest();
+}
