@@ -9,20 +9,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-void WriteContentToFile(const char* filename, const char* content)
+void WriteContentToFile(const char* const filename, const char* const content)
 {
-    FILE* f = fopen(filename, "wb");
+    FILE* const f = fopen(filename, "wb");
     fputs(content, f);
     fclose(f);
 }
 
-char* ReadContentFromFile(const char* filename)
+char* ReadContentFromFile(const char* const filename)
 {
-    FILE* f = fopen(filename, "rb");
+    FILE* const f = fopen(filename, "rb");
     fseek(f, 0, SEEK_END);
     const size_t fsize = (size_t)ftell(f);
     fseek(f, 0, SEEK_SET);
-    char* content = (char*)malloc(fsize);
+    char* const content = (char* const)malloc(fsize);
     const size_t unused = fread(content, 1, fsize, f);
     (void)unused;
     fclose(f);
@@ -46,12 +46,12 @@ void ExpectStrEq(const char* const expected, const char* const actual)
     }
 }
 
-void RunTest(const char* input_filename,
-             const char* output_filename,
-             const char** compilation_arguments,
+void RunTest(const char* const input_filename,
+             const char* const output_filename,
+             const char* const* const compilation_arguments,
              const int compilation_argument_count,
-             const char* input_content,
-             const char* expected_output)
+             const char* const input_content,
+             const char* const expected_output)
 {
     WriteContentToFile(input_filename, input_content);
 
@@ -63,7 +63,7 @@ void RunTest(const char* input_filename,
     args.print_usage_and_quit = false;
     GenerateBindings(args);
 
-    char* actual_output = ReadContentFromFile(output_filename);
+    char* const actual_output = ReadContentFromFile(output_filename);
     ExpectStrEq(expected_output, actual_output);
 
     free(actual_output);
