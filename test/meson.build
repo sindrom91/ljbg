@@ -1,5 +1,5 @@
-struct_test = executable('struct_test',
-                         'struct_test.c',
-                         dependencies : [bindgen_dep])
+unit_tests = executable('unit_tests',
+                        'unit_tests.c',
+                        dependencies : [bindgen_dep])
 
-test('structure tests', struct_test)
+test('unit tests', unit_tests)
