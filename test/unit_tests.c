@@ -90,8 +90,18 @@ void RunUnionTest()
     RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
 }
 
+void RunFunctionTest()
+{
+    const char input_content[] = "int Foo(int x, int y);";
+    const char input_filename[] = "test_function.h";
+    const char output_filename[] = "test_function.lua";
+    const char expected_output[] = PREFIX "int Foo(int x, int y);\n" SUFFIX;
+    RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
+}
+
 int main()
 {
     RunStructTest();
     RunUnionTest();
+    RunFunctionTest();
 }
