@@ -7,6 +7,12 @@ meson setup ./build/ --buildtype=release
 meson compile -C ./build/
 ```
 
+## How to run tests?
+
+```
+meson test -C ./build/
+```
+
 ## How to use?
 
 ```
