@@ -90,6 +90,15 @@ void RunUnionTest()
     RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
 }
 
+void RunEnumTest()
+{
+    const char input_content[] = "enum e {\n    FIRST,\n    SECOND\n};\n";
+    const char input_filename[] = "test_enum.h";
+    const char output_filename[] = "test_enum.lua";
+    const char expected_output[] = PREFIX "enum e {\n    FIRST,\n    SECOND\n};" SUFFIX;
+    RunTest(input_filename, output_filename, NULL, 0, input_content, expected_output);
+}
+
 void RunFunctionTest()
 {
     const char input_content[] = "int Foo(int x, int y);";
@@ -103,5 +112,6 @@ int main()
 {
     RunStructTest();
     RunUnionTest();
+    RunEnumTest();
     RunFunctionTest();
 }
