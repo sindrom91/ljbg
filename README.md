@@ -16,5 +16,7 @@ meson test -C ./build/
 ## How to use?
 
 ```
-ljbg <input> --output <output> --args <arg> <arg> ...
+ljbg <input> [-o/--output <output>] [--args <arg> <arg> ...]
+
+Arguments are expected in this exact order!
 ```
