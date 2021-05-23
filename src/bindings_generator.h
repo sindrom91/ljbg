@@ -5,4 +5,4 @@
 
 #include "argument_parser.h"
 
-void GenerateBindings(const Arguments args);
+int GenerateBindings(const Arguments args);

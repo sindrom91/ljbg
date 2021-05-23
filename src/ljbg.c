@@ -19,7 +19,5 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    GenerateBindings(args);
-
-    return 0;
+    return GenerateBindings(args);
 }

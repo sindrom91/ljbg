@@ -67,8 +67,16 @@ static enum CXChildVisitResult FunctionVisitor(CXCursor cursor, CXCursor parent,
     return CXChildVisit_Continue;
 }
 
-void GenerateBindings(const Arguments args)
+int GenerateBindings(const Arguments args)
 {
+    FILE* in = fopen(args.input_file, "r");
+    if (in == NULL)
+    {
+        fprintf(stderr, "Input file %s not found.\n", args.input_file);
+        return 1;
+    }
+    fclose(in);
+
     CXIndex index = clang_createIndex(0, 0);
     assert(index != NULL);
 
@@ -89,4 +97,6 @@ void GenerateBindings(const Arguments args)
 
     clang_disposeTranslationUnit(tu);
     clang_disposeIndex(index);
+
+    return 0;
 }
