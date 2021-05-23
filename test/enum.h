@@ -1,0 +1,4 @@
+enum e {
+    FIRST,
+    SECOND
+};
