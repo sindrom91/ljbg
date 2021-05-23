@@ -1,3 +1,8 @@
+#
+# LJBG © -- LuaJIT FFI bindings generator.
+# Copyright (C) 2020 Stefan Pejic. See copyright notice in LICENSE file.
+#
+
 test_runner = find_program('test_runner.sh', required : true)
 
 test('struct', test_runner, workdir : meson.current_build_dir(),

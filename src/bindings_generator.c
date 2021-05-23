@@ -1,3 +1,8 @@
+//
+// LJBG © -- LuaJIT FFI bindings generator.
+// Copyright (C) 2020 Stefan Pejic. See copyright notice in LICENSE file.
+//
+
 #include "bindings_generator.h"
 #include <assert.h>
 #include <clang-c/Index.h>
