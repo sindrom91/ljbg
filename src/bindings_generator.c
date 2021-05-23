@@ -73,7 +73,7 @@ void GenerateBindings(const Arguments args)
 
     CXCursor cursor = clang_getTranslationUnitCursor(tu);
 
-    FILE* f = fopen(args.output_file, "w");
+    FILE* f = args.output_file ? fopen(args.output_file, "w") : stdout;
     assert(f != NULL);
 
     fprintf(f, "%s", gLuaFileBoilerplatePrefix);
