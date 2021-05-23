@@ -7,4 +7,8 @@ struct s {
 typedef struct {
     int x;
 } ts;
+struct __attribute__((packed)) ps {
+    int x;
+    short y;
+};
 ]]
