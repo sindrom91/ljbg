@@ -84,6 +84,30 @@ int GenerateBindings(const Arguments args)
         index, args.input_file, args.compilation_arguments, args.compilation_argument_count, NULL, 0, 0);
     assert(tu != NULL);
 
+    unsigned num_diagnostics = clang_getNumDiagnostics(tu);
+    bool has_error_occurred = false;
+    for (unsigned i = 0; i < num_diagnostics; i++)
+    {
+        CXDiagnostic d = clang_getDiagnostic(tu, i);
+        if (clang_getDiagnosticSeverity(d) > CXDiagnostic_Warning)
+        {
+            has_error_occurred = true;
+
+            CXString s = clang_formatDiagnostic(d, CXDiagnostic_DisplaySourceLocation);
+            const char* cs = clang_getCString(s);
+            fprintf(stderr, "%s\n", cs);
+            clang_disposeString(s);
+        }
+        clang_disposeDiagnostic(d);
+    }
+    if (has_error_occurred)
+    {
+        clang_disposeTranslationUnit(tu);
+        clang_disposeIndex(index);
+
+        return 1;
+    }
+
     CXCursor cursor = clang_getTranslationUnitCursor(tu);
 
     FILE* f = args.output_file ? fopen(args.output_file, "w") : stdout;
