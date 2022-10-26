@@ -5,4 +5,12 @@
 
 #include "argument_parser.h"
 
-int GenerateBindings(const Arguments args);
+typedef enum
+{
+    StatusSuccess = 0,
+    StatusBadInputFile = 1,
+    StatusBadOutputFile = 2,
+    StatusCompilationError = 3,
+} StatusCodes;
+
+StatusCodes GenerateBindings(const Arguments args);

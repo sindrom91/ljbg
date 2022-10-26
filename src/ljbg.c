@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
         printf("Usage:\n");
         printf("ljbg <input> [-o/--output <output>] [--args <arg> <arg> ...]\n");
         printf("\nArguments are expected in this exact order!\n");
-        return 1;
+        return StatusSuccess;
     }
 
     return GenerateBindings(args);

@@ -67,13 +67,13 @@ static enum CXChildVisitResult FunctionVisitor(CXCursor cursor, CXCursor parent,
     return CXChildVisit_Continue;
 }
 
-int GenerateBindings(const Arguments args)
+StatusCodes GenerateBindings(const Arguments args)
 {
     FILE* in = fopen(args.input_file, "r");
     if (in == NULL)
     {
         fprintf(stderr, "Input file %s not found.\n", args.input_file);
-        return 1;
+        return StatusBadInputFile;
     }
     fclose(in);
 
@@ -105,22 +105,29 @@ int GenerateBindings(const Arguments args)
         clang_disposeTranslationUnit(tu);
         clang_disposeIndex(index);
 
-        return 1;
+        return StatusCompilationError;
     }
 
     CXCursor cursor = clang_getTranslationUnitCursor(tu);
 
     FILE* f = args.output_file ? fopen(args.output_file, "w") : stdout;
-    assert(f != NULL);
+    if (f == NULL)
+    {
+        fprintf(stderr, "Bad output file: %s\n", args.output_file ? args.output_file : "stdout");
+        return StatusBadOutputFile;
+    }
 
     fprintf(f, "%s", gLuaFileBoilerplatePrefix);
     clang_visitChildren(cursor, FunctionVisitor, (CXClientData)&f);
     fprintf(f, "%s", gLuaFileBoilerplateSuffix);
 
-    fclose(f);
+    if (f != stdout)
+    {
+        fclose(f);
+    }
 
     clang_disposeTranslationUnit(tu);
     clang_disposeIndex(index);
 
-    return 0;
+    return StatusSuccess;
 }
