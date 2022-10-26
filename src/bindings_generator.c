@@ -110,20 +110,20 @@ StatusCodes GenerateBindings(const Arguments args)
 
     CXCursor cursor = clang_getTranslationUnitCursor(tu);
 
-    FILE* f = args.output_file ? fopen(args.output_file, "w") : stdout;
-    if (f == NULL)
+    FILE* out = args.output_file ? fopen(args.output_file, "w") : stdout;
+    if (out == NULL)
     {
         fprintf(stderr, "Bad output file: %s\n", args.output_file ? args.output_file : "stdout");
         return StatusBadOutputFile;
     }
 
-    fprintf(f, "%s", gLuaFileBoilerplatePrefix);
-    clang_visitChildren(cursor, FunctionVisitor, (CXClientData)&f);
-    fprintf(f, "%s", gLuaFileBoilerplateSuffix);
+    fprintf(out, "%s", gLuaFileBoilerplatePrefix);
+    clang_visitChildren(cursor, FunctionVisitor, (CXClientData)&out);
+    fprintf(out, "%s", gLuaFileBoilerplateSuffix);
 
-    if (f != stdout)
+    if (out != stdout)
     {
-        fclose(f);
+        fclose(out);
     }
 
     clang_disposeTranslationUnit(tu);
