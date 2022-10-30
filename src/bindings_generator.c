@@ -15,8 +15,9 @@ static const char gLuaFileBoilerplateSuffix[] = "]]\n";
 
 static const char gUnnamedStructPrefix[] = "struct {";
 static const char gUnnamedUnionPrefix[] = "union {";
-// TODO: There are 2 spaces between enum and {. This is probably a bug in libclang.
-static const char gUnnamedEnumPrefix[] = "enum  {";
+static const char gUnnamedEnumPrefix[] = "enum {";
+// In older versions of libclang, there are 2 spaces between 'enum' and '{'.
+static const char gUnnamedEnumPrefixLegacy[] = "enum  {";
 
 static bool IsUnnamedStructUnionOrEnum(const CXCursor c)
 {
@@ -29,7 +30,8 @@ static bool IsUnnamedStructUnionOrEnum(const CXCursor c)
     const char* s = clang_getCString(pretty_printed_cursor);
     if ((strncmp(gUnnamedStructPrefix, s, strlen(gUnnamedStructPrefix)) != 0) &&
         (strncmp(gUnnamedUnionPrefix, s, strlen(gUnnamedUnionPrefix)) != 0) &&
-        (strncmp(gUnnamedEnumPrefix, s, strlen(gUnnamedEnumPrefix)) != 0))
+        (strncmp(gUnnamedEnumPrefix, s, strlen(gUnnamedEnumPrefix)) != 0) &&
+        (strncmp(gUnnamedEnumPrefixLegacy, s, strlen(gUnnamedEnumPrefixLegacy)) != 0))
     {
         clang_disposeString(pretty_printed_cursor);
         return false;

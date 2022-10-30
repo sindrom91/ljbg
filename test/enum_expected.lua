@@ -5,7 +5,7 @@ enum e {
     FIRST,
     SECOND
 };
-typedef enum  {
+typedef enum {
     THIRD,
     FOURTH
 } te;
